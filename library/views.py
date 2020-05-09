@@ -1,8 +1,16 @@
+from django.core.exceptions import ObjectDoesNotExist
+from django.http.response import JsonResponse
+from django.views.generic import View
+from rest_framework import generics, status
+from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
-from rest_framework import generics
+from rest_framework.response import Response
 
-
-from integrations_youtube.serializers import YoutubeVideoDetailsSerializer
+from integrations_youtube.client import YoutubeClient
+from integrations_youtube.models import YoutubeCredentials
+from integrations_youtube.serializers import (VideoSearchRequestSerializer,
+                                              YoutubeDataVideoObjectSerializer,
+                                              YoutubeVideoDetailsSerializer)
 from library.models import YoutubeVideoDetails
 
 KEY_PER_PAGE = 2
@@ -15,6 +23,32 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class VideoListView(generics.ListAPIView):
-    queryset = YoutubeVideoDetails.objects.order_by('-video_publish_date')
+    queryset = YoutubeVideoDetails.objects.order_by('video_publish_date')
     serializer_class = YoutubeVideoDetailsSerializer
     pagination_class = StandardResultsSetPagination
+
+
+@api_view(('GET',))
+def get_search_video_results(request):
+        keywords = request.GET.get('q')
+        if not keywords:
+            return Response(data={"q": ["This field may not be null."]},
+                            status=status.HTTP_400_BAD_REQUEST)
+        _keywords = keywords.split(',')
+        try:
+            credentials_key = request.GET.get('key')
+            if not credentials_key:
+                credentials = YoutubeCredentials.active_objects.first()
+                if not credentials:
+                    return Response(data={"key": ["No active credentials currently exist."]},
+                                    status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            else:
+                credentials = YoutubeCredentials.active_objects.get(id=int(credentials_key))
+        except ObjectDoesNotExist:
+            return Response(data={"key": ["This field is not correct."]},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        yt = YoutubeClient(credentials).fetch(keywords=_keywords)
+        serializer = YoutubeDataVideoObjectSerializer(data=yt, many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
