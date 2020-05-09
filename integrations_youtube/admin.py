@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from integrations_youtube.models import YoutubeCredentials
+
+
+@admin.register(YoutubeCredentials)
+class YoutubeCredentialsAdmin(admin.ModelAdmin):
+    pass
