@@ -1,8 +1,4 @@
-from django.core.paginator import (
-    EmptyPage,
-    PageNotAnInteger,
-    Paginator,
-)
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
 def get_paginated_object(paginator: Paginator, page: int):
@@ -13,4 +9,3 @@ def get_paginated_object(paginator: Paginator, page: int):
     except EmptyPage:
         objects = []
     return objects
-
