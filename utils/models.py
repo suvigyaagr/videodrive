@@ -8,3 +8,11 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class Setting(BaseModel):
+    key = models.CharField(max_length=128, unique=True)
+    value = models.CharField(max_length=512, default='', blank=True)
+
+    def __str__(self):
+        return self.key
