@@ -1,7 +1,9 @@
+from datetime import datetime
+
 from rest_framework import serializers
 from rest_framework.fields import empty
+
 from library.models import YoutubeChannelDetails, YoutubeVideoDetails
-from datetime import datetime
 
 
 class YoutubeDataVideoListSerializer(serializers.ListSerializer):
@@ -34,9 +36,9 @@ class YoutubeDataVideoObjectSerializer(serializers.Serializer):
     channel_title = serializers.CharField(max_length=300)
     video_id = serializers.CharField(max_length=30)
     video_title = serializers.CharField(max_length=300)
-    video_description = serializers.CharField(max_length=1000)
+    video_description = serializers.CharField(max_length=1000, allow_blank=True)
     video_publish_date = serializers.DateTimeField()
-    video_thumbnail = serializers.URLField()
+    video_thumbnail = serializers.URLField(allow_blank=True)
 
     class Meta:
         list_serializer_class = YoutubeDataVideoListSerializer
