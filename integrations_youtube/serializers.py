@@ -31,9 +31,9 @@ class YoutubeDataVideoListSerializer(serializers.ListSerializer):
 
 class YoutubeDataVideoObjectSerializer(serializers.Serializer):
     channel_id = serializers.CharField(max_length=30)
-    channel_title = serializers.CharField(max_length=100)
+    channel_title = serializers.CharField(max_length=300)
     video_id = serializers.CharField(max_length=30)
-    video_title = serializers.CharField(max_length=100)
+    video_title = serializers.CharField(max_length=300)
     video_description = serializers.CharField(max_length=1000)
     video_publish_date = serializers.DateTimeField()
     video_thumbnail = serializers.URLField()
@@ -45,3 +45,9 @@ class YoutubeDataVideoObjectSerializer(serializers.Serializer):
         for item in data:
             item['video_publish_date'] = datetime.fromtimestamp(item.get('video_publish_date'))
         super().__init__(data=data, *args, **kwargs)
+
+
+class YoutubeVideoDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = YoutubeVideoDetails
+        fields = '__all__'

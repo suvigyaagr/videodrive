@@ -1,7 +1,8 @@
 from django.db import models
+from utils.models import BaseModel
 
 
-class YoutubeChannelDetails(models.Model):
+class YoutubeChannelDetails(BaseModel):
     channel_id = models.CharField(
         max_length=30,
         unique=True,
@@ -11,7 +12,7 @@ class YoutubeChannelDetails(models.Model):
     )
 
 
-class YoutubeVideoDetails(models.Model):
+class YoutubeVideoDetails(BaseModel):
     channel = models.ForeignKey(
         YoutubeChannelDetails,
         on_delete=models.PROTECT

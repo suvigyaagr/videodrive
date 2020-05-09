@@ -1,7 +1,9 @@
 from django.db import models
 
+from utils.models import BaseModel
 
-class YoutubeCredentials(models.Model):
+
+class YoutubeCredentials(BaseModel):
     name = models.CharField(
         max_length=40
     )

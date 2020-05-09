@@ -20,3 +20,8 @@ class YoutubeVideoDetailsAdmin(admin.ModelAdmin):
         'video_title',
         'video_publish_date',
     )
+    list_filter = (
+        'video_publish_date',
+        'created_at',
+        'updated_at',
+    )
