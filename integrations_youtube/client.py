@@ -1,10 +1,8 @@
-from datetime import datetime
+import datetime
 
-from django.core.exceptions import ObjectDoesNotExist
 from youtube_api import YouTubeDataAPI
 
 from integrations_youtube.models import YoutubeCredentials
-from utils.models import Setting
 
 KEY_YOUTUBE_PUBLISHED_DATE = 'YOUTUBE_PUBLISHED_DATE'
 

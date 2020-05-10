@@ -47,5 +47,12 @@ def get_search_video_results(request):
 
         yt = YoutubeClient(credentials).fetch(keywords=_keywords)
         serializer = YoutubeDataVideoObjectSerializer(data=yt, many=True)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if not serializer.is_valid():
+            # Soft Deleting the credential as no longer the date was successfully captured.
+            # Next time YoutubeCredentialsManager will pick the next active credentials.
+            credentials.is_active = False
+            credentials.save()
+            return Response(data={"key": ["Please try again in some time."]},
+                            status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        else:
+            return Response(serializer.data, status=status.HTTP_200_OK)
