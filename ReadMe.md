@@ -13,7 +13,16 @@
  - Enter a username and password
  - Run `python manage.py runserver` and login to `localhost:8080` using the above credentials
  - Enter the following credentials in `/admin/utils/setting/`:
-    - Key:`CRON_FETCH_VIDEO_KEYWORDS`, Value:`football,cricket,official`
+    - Key:`CRON_FETCH_VIDEO_KEYWORDS`, Value:[comma_separated_keywords].
+      
+      Eg:`football,cricket,official`.
+    - Key:`CRON_FETCH_VIDEO_PUBLISHED_AFTER`, Value:[timestamp_in_iso_format].
+      
+      Eg:`2020-01-01T00:00:00`
+    - Key:`CRON_FETCH_VIDEO_MAX_RESULTS`, Value:[any integer value]. 
+      
+      Eg:`50`
+      
  - Enter the following credentials in `/admin/integrations_youtube/youtubecredentials/`:
     
     - name:[Any Name], ApiKey: API Key from <a href='https://console.developers.google.com/apis/credentials'>Console Page</a>, isActive=True
