@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'django_extensions',
     'rest_framework',
+    'django_crontab',
 
     'utils',
     'library',
@@ -92,6 +93,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100
 }
+
+
+CRONJOBS = [
+    ('*/1 * * * *', 'library.tasks.fetch_and_store_video_details')
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

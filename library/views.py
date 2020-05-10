@@ -1,6 +1,4 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.http.response import JsonResponse
-from django.views.generic import View
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
@@ -8,8 +6,7 @@ from rest_framework.response import Response
 
 from integrations_youtube.client import YoutubeClient
 from integrations_youtube.models import YoutubeCredentials
-from integrations_youtube.serializers import (VideoSearchRequestSerializer,
-                                              YoutubeDataVideoObjectSerializer,
+from integrations_youtube.serializers import (YoutubeDataVideoObjectSerializer,
                                               YoutubeVideoDetailsSerializer)
 from library.models import YoutubeVideoDetails
 
