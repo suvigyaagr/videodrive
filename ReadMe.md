@@ -38,8 +38,9 @@
 
 <b>Run</b>
 
- - After launch go to `http://localhost:8000/videos/`, to check the paginated API response for the list of stored viedeo details.
+ - After launch go to `http://localhost:8000/videos/`, to check the paginated API response for the list of stored video details.
  - After launch go to `http://localhost:8000/videos/search/?q=[keywords]`, to check the paginated API response for search API. Eg: `http://localhost:8000/videos/search/?q=office,football,work`
+ - After launch go to `http://localhost:8000/admin/`, the dashboard to check the stored detials.
 
 
 <b>Important Note</b>
