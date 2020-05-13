@@ -20,7 +20,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class VideoListView(generics.ListAPIView):
-    queryset = YoutubeVideoDetails.objects.order_by('video_publish_date')
+    queryset = YoutubeVideoDetails.objects.order_by('-video_publish_date')
     serializer_class = YoutubeVideoDetailsSerializer
     pagination_class = StandardResultsSetPagination
 
