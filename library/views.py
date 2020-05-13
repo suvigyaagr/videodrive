@@ -1,4 +1,5 @@
-from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
+
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
@@ -33,24 +34,17 @@ def get_search_video_results(request):
                             status=status.HTTP_400_BAD_REQUEST)
         _keywords = keywords.split(',')
         try:
-            credentials_key = request.GET.get('key')
-            if not credentials_key:
-                credentials = YoutubeCredentials.active_objects.first()
-                if not credentials:
-                    return Response(data={"key": ["No active credentials currently exist."]},
-                                    status=status.HTTP_503_SERVICE_UNAVAILABLE)
-            else:
-                credentials = YoutubeCredentials.active_objects.get(id=int(credentials_key))
-        except ObjectDoesNotExist:
-            return Response(data={"key": ["This field is not correct."]},
-                            status=status.HTTP_400_BAD_REQUEST)
+            credentials = YoutubeCredentials.active_objects.first()
+        except IndexError:
+            return Response(data={"key": ["No active credentials currently exist."]},
+                            status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         yt = YoutubeClient(credentials).fetch(keywords=_keywords)
         serializer = YoutubeDataVideoObjectSerializer(data=yt, many=True)
         if not serializer.is_valid():
             # Soft Deleting the credential as no longer the date was successfully captured.
             # Next time YoutubeCredentialsManager will pick the next active credentials.
-            credentials.is_active = False
+            credentials.last_expired_at = datetime.now()
             credentials.save()
             return Response(data={"key": ["Please try again in some time."]},
                             status=status.HTTP_503_SERVICE_UNAVAILABLE)
